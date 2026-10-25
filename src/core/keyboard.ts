@@ -185,6 +185,13 @@ export function isTypingSurface(e: KeyboardEvent): boolean {
 	return target.isContentEditable;
 }
 
+/** True while an IME owns the key (Japanese conversion): the Enter that
+ *  confirms a conversion must never submit. Chromium flags it isComposing;
+ *  Safari fires it after compositionend, so only keyCode 229 tells. */
+export function isImeComposing(e: KeyboardEvent): boolean {
+	return e.isComposing || e.keyCode === 229;
+}
+
 /** macOS styling for binding display ("⌘D", "⇧⇥", "⌥↑"). */
 export const IS_MAC =
 	typeof navigator !== "undefined" && /mac/i.test(navigator.platform || navigator.userAgent);

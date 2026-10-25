@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 import { fuzzyScore } from "@/src/core";
 import { useServerEvent, useServerResync } from "@/components/server-events";
 import type { ChatListItem } from "@/src/core";
-import { kbdEventForAction } from "@/src/core";
+import { isImeComposing, kbdEventForAction } from "@/src/core";
 import { notifySettingsSaved } from "@/components/settings-signal";
 
 /**
@@ -356,6 +356,7 @@ export function RenameRow({ chat, onCommit, onCancel }: { chat: ChatListItem; on
 					onChange={(e) => setDraft(e.target.value)}
 					onBlur={() => onCommit(draft)}
 					onKeyDown={(e) => {
+						if (isImeComposing(e.nativeEvent)) return;
 						if (e.key === "Enter") e.currentTarget.blur();
 						if (e.key === "Escape") {
 							e.stopPropagation(); // discard, not also the sidebar/chat chains
@@ -733,6 +734,7 @@ function SessionsSidebar() {
 							// key so the window Esc chain (dictation / abort)
 							// doesn't also fire.
 							onKeyDown={(e) => {
+								if (isImeComposing(e.nativeEvent)) return;
 								if (e.key === "Escape") {
 									e.stopPropagation();
 									e.currentTarget.blur();

@@ -36,7 +36,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useBackdropDismiss } from "@/components/backdrop-dismiss";
 import type React from "react";
-import { type ModelCatalogEntry, type ModelSlotName, type ModelsSettings } from "@/src/core";
+import { isImeComposing, type ModelCatalogEntry, type ModelSlotName, type ModelsSettings } from "@/src/core";
 import { prettyModel } from "@/components/usage-format";
 import { ModelMenuList } from "@/components/settings/model-menu";
 import { MenuShell } from "@/components/menu-shell";
@@ -186,7 +186,7 @@ export function SetupKeysBody({
 							value={value}
 							onChange={(e) => onValue(e.target.value)}
 							onKeyDown={(e) => {
-								if (e.key === "Enter" && value.trim()) onSave();
+								if (e.key === "Enter" && !isImeComposing(e.nativeEvent) && value.trim()) onSave();
 							}}
 							placeholder="Paste key…"
 							aria-label={`${provider.label} key`}
