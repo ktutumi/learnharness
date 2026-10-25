@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import { ChevronDownIcon, ChevronUpIcon, SearchIcon, XIcon } from "lucide-react";
-import { kbdEventForAction, stepSessionMatch } from "@/src/core";
+import { isImeComposing, kbdEventForAction, stepSessionMatch } from "@/src/core";
 import {
 	sameSessionRange, sessionFindRanges, sessionRangeIdentity, type SessionRangeIdentity,
 } from "@/components/session-find-dom";
@@ -169,7 +169,7 @@ export function SessionFind({ scopeRef, scrollContextRef }: {
 			onKeyDown={(event) => {
 				if (event.key === "Enter") {
 					event.stopPropagation(); // NEVER reach question/global Enter submits.
-					if ((event.target as HTMLElement).tagName !== "INPUT" || event.nativeEvent.isComposing) return;
+					if ((event.target as HTMLElement).tagName !== "INPUT" || isImeComposing(event.nativeEvent)) return;
 					event.preventDefault();
 					step(event.shiftKey ? -1 : 1);
 				} else if (event.key === "Escape") {

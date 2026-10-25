@@ -3,6 +3,7 @@
 import { ArrowRightIcon, CornerDownLeftIcon, SquareIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Hint } from "@/components/ui/hint";
+import { isImeComposing } from "@/src/core";
 
 /**
  * The chat composer — content row ONLY (the persistent rounded shell lives in
@@ -95,6 +96,8 @@ export function Composer({
 				value={value}
 				onChange={(e) => onChange(e.target.value)}
 				onKeyDown={(e) => {
+					// Keys mid-conversion belong to the IME (its Enter confirms).
+					if (isImeComposing(e.nativeEvent)) return;
 					// Esc ends dictation before anything else Esc might someday mean
 					// here (the dictate decisions: click-again or Esc to stop).
 					// stopPropagation claims the Esc (keyboard wave A): the

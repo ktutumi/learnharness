@@ -21,7 +21,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ModelCatalogEntry } from "@/src/core";
-import { fuzzyScore, subscriptionLabel } from "@/src/core";
+import { fuzzyScore, isImeComposing, subscriptionLabel } from "@/src/core";
 import { formatTokens } from "@/components/usage-format";
 
 function priceLabel(cost: ModelCatalogEntry["cost"]): string {
@@ -86,6 +86,7 @@ export function ModelMenuList({
 					setMenuIdx(null); // new query → the walk restarts on Enter/↓
 				}}
 				onKeyDown={(e) => {
+					if (isImeComposing(e.nativeEvent)) return;
 					if (e.key === "ArrowDown" || e.key === "ArrowUp") {
 						e.preventDefault();
 						e.stopPropagation();
@@ -230,6 +231,7 @@ export function ProviderMenuList({
 					setMenuIdx(null);
 				}}
 				onKeyDown={(e) => {
+					if (isImeComposing(e.nativeEvent)) return;
 					if (e.key === "ArrowDown" || e.key === "ArrowUp") {
 						e.preventDefault();
 						e.stopPropagation();
@@ -360,6 +362,7 @@ export function FontMenuList({
 					setMenuIdx(null); // new query → the walk restarts on Enter/↓
 				}}
 				onKeyDown={(e) => {
+					if (isImeComposing(e.nativeEvent)) return;
 					if (e.key === "ArrowDown" || e.key === "ArrowUp") {
 						e.preventDefault();
 						e.stopPropagation();

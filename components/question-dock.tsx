@@ -7,6 +7,7 @@ import { finishDictation, isDictationActive, joinDictation, useDictationTarget }
 import { useEnterSubmits } from "@/components/enter-submits";
 import { MessageResponse } from "@/components/ai-elements/message";
 import { cn } from "@/lib/utils";
+import { isImeComposing } from "@/src/core";
 import {
 	buildAnswer,
 	normalizeQuizType,
@@ -686,6 +687,7 @@ function QuestionDockForm({
 										setSel((prev) => (prev.otherSelected ? prev : toggleOther(selectMode, prev)));
 									}}
 									onKeyDown={(e) => {
+										if (isImeComposing(e.nativeEvent)) return;
 										// Esc escapes the typing (owner refinement round,
 										// 2026-09-24): focus leaves the input, the row STAYS
 										// selected — deselection is the next Space's job, acting
@@ -838,6 +840,7 @@ function QuestionDockForm({
 								setText(e.target.value);
 							}}
 							onKeyDown={(e) => {
+								if (isImeComposing(e.nativeEvent)) return;
 								// Esc ends dictation (the dictate decisions: click-again
 								// or Esc) — stopPropagation claims it (keyboard wave
 								// A) so the window chain doesn't also abort a turn.
@@ -867,6 +870,7 @@ function QuestionDockForm({
 								setThinking(e.target.value);
 							}}
 							onKeyDown={(e) => {
+								if (isImeComposing(e.nativeEvent)) return;
 								// Esc ends dictation (the dictate decisions: click-again
 								// or Esc) — stopPropagation claims it (keyboard wave
 								// A) so the window chain doesn't also abort a turn.

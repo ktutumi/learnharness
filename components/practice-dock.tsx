@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { joinDictation, useDictationTarget } from "@/components/dictation";
 import { useEnterSubmits } from "@/components/enter-submits";
 import { cn } from "@/lib/utils";
-import { repairMathForDisplay } from "@/src/core";
+import { isImeComposing, repairMathForDisplay } from "@/src/core";
 
 /**
  * The practice dock (practice sessions, owner design 2026-10-04): an
@@ -129,6 +129,7 @@ export function PracticeDock({ problemCallId, input, expanded, onExpand, onSubmi
 						setThinking(e.target.value);
 					}}
 					onKeyDown={(e) => {
+						if (isImeComposing(e.nativeEvent)) return;
 						// Esc ends dictation — stopPropagation claims it (the
 						// keyboard machine) so the window chain doesn't also fire.
 						if (e.key === "Escape" && onEscape) {

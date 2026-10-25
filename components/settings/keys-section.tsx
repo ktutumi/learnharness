@@ -24,7 +24,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
-import { AUTH_KEYS, type AuthKeyStatus } from "@/src/core";
+import { AUTH_KEYS, isImeComposing, type AuthKeyStatus } from "@/src/core";
 import { SettingsGroup } from "./controls.tsx";
 import { SubscriptionConnections } from "./subscription-connections.tsx";
 import { ProviderMenuList } from "./model-menu.tsx";
@@ -161,7 +161,7 @@ function KeyTableRow({
 						value={value}
 						onChange={(e) => setValue(e.target.value)}
 						onKeyDown={(e) => {
-							if (e.key === "Enter") void save();
+							if (e.key === "Enter" && !isImeComposing(e.nativeEvent)) void save();
 						}}
 						placeholder="Paste key…"
 						aria-label={`${label} key`}
@@ -505,7 +505,7 @@ function AddProviderEditor({
 				value={value}
 				onChange={(e) => setValue(e.target.value)}
 				onKeyDown={(e) => {
-					if (e.key === "Enter" && value.trim()) onSave(value);
+					if (e.key === "Enter" && !isImeComposing(e.nativeEvent) && value.trim()) onSave(value);
 				}}
 				placeholder="Paste key…"
 				aria-label={`${provider.label} key`}

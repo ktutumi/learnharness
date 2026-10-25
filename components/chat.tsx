@@ -78,7 +78,7 @@ import {
 } from "@/src/core";
 import { ReadingThinkingField } from "@/components/reading-thinking";
 import { currentUserThinkingOpen, setAllUserThinkingOpen } from "@/components/thinking-block";
-import { slotsConfigured, type ModelsSettings } from "@/src/core";
+import { isImeComposing, slotsConfigured, type ModelsSettings } from "@/src/core";
 import { useSettingsSaved } from "@/components/settings-signal";
 
 /** One width for everything: transcript, cards, and the bottom blob share this column. */
@@ -1226,6 +1226,7 @@ export function Chat({
 								value={titleDraft}
 								onChange={(e) => setTitleDraft(e.target.value)}
 								onKeyDown={(e) => {
+									if (isImeComposing(e.nativeEvent)) return;
 									if (e.key === "Enter") void commitRename(titleDraft);
 									// stopPropagation claims the Esc (keyboard wave A):
 									// closing rename must not also abort a turn.

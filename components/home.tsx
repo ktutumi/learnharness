@@ -13,6 +13,7 @@ import { useFieldCycle } from "@/components/field-cycle";
 import { SidebarToggle } from "@/components/sidebar";
 import { StatsBar } from "@/components/stats-bar";
 import type { TurnUsage } from "@/src/core";
+import { isImeComposing } from "@/src/core";
 
 /**
  * Home — the knowledge graph is the main view, full-bleed edge to edge
@@ -256,6 +257,7 @@ export function Home({
 							setTopic(e.target.value);
 						}}
 						onKeyDown={(e) => {
+							if (isImeComposing(e.nativeEvent)) return;
 							// Esc ends dictation (the dictate decisions: click-again or
 							// Esc) — stopPropagation claims it (keyboard wave A) so
 							// the window chain doesn't also abort a turn.
