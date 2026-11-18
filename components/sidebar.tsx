@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils";
 import { fuzzyScore } from "@/src/core";
 import { useServerEvent, useServerResync } from "@/components/server-events";
 import type { ChatListItem } from "@/src/core";
-import { kbdEventForAction } from "@/src/core";
+import { isImeComposing, kbdEventForAction } from "@/src/core";
 import { notifySettingsSaved } from "@/components/settings-signal";
 import { PluginWidgets } from "@/components/plugins";
 import { PluginSidebarActions } from "@/components/plugin-chrome";
@@ -378,6 +378,7 @@ export function RenameRow({ chat, onCommit, onCancel }: { chat: ChatListItem; on
 					onChange={(e) => setDraft(e.target.value)}
 					onBlur={() => onCommit(draft)}
 					onKeyDown={(e) => {
+						if (isImeComposing(e.nativeEvent)) return;
 						if (e.key === "Enter") e.currentTarget.blur();
 						if (e.key === "Escape") {
 							if (interactions && !interactions.isElementEligible(e.currentTarget)) return;
@@ -749,6 +750,7 @@ function SessionsSidebar() {
 							// key so the window Esc chain (dictation / abort)
 							// doesn't also fire.
 							onKeyDown={(e) => {
+								if (isImeComposing(e.nativeEvent)) return;
 								if (e.key === "Escape") {
 									if (!interactions.isElementEligible(e.currentTarget)) return;
 									interactions.claimEscape(e);

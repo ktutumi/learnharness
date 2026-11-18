@@ -29,6 +29,7 @@ import {
 	CUSTOM_MODEL_DEFAULT_CONTEXT_WINDOW,
 	CUSTOM_MODEL_DEFAULT_MAX_TOKENS,
 	CUSTOM_PROVIDER,
+	isImeComposing,
 	normalizeBaseUrl,
 	type AuthKeyStatus,
 	type CustomModel,
@@ -214,7 +215,7 @@ function KeyTableRow({
 						value={value}
 						onChange={(e) => setValue(e.target.value)}
 						onKeyDown={(e) => {
-							if (e.key === "Enter") void save();
+							if (e.key === "Enter" && !isImeComposing(e.nativeEvent)) void save();
 						}}
 						placeholder="Paste key…"
 						aria-label={`${label} key`}
@@ -645,7 +646,7 @@ function AddProviderEditor({
 				value={value}
 				onChange={(e) => setValue(e.target.value)}
 				onKeyDown={(e) => {
-					if (e.key === "Enter" && value.trim()) onSave(value);
+					if (e.key === "Enter" && !isImeComposing(e.nativeEvent) && value.trim()) onSave(value);
 				}}
 				placeholder="Paste key…"
 				aria-label={`${provider.label} key`}

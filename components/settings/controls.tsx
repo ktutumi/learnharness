@@ -11,6 +11,7 @@
 
 import { useLayoutEffect, useRef, useState, type ComponentPropsWithRef, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { isImeComposing } from "@/src/core";
 
 /** A section block: pronounced mono heading + content. */
 export function SettingsSection({
@@ -316,6 +317,7 @@ export function CommitInput({
 			}}
 			onBlur={(e) => { void commit(e.currentTarget); }}
 			onKeyDown={(e) => {
+				if (isImeComposing(e.nativeEvent)) return;
 				if (e.key === "Enter") e.currentTarget.blur();
 				if (e.key === "Escape") {
 					e.preventDefault();

@@ -21,7 +21,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ModelCatalogEntry } from "@/src/core";
-import { CLAUDE_CODE_PROVIDER, CUSTOM_PROVIDER, fuzzyScore, subscriptionLabel } from "@/src/core";
+import { CLAUDE_CODE_PROVIDER, CUSTOM_PROVIDER, fuzzyScore, isImeComposing, subscriptionLabel } from "@/src/core";
 import { formatTokens } from "@/components/usage-format";
 import { SearchMenuList } from "./search-menu-list";
 
@@ -188,6 +188,7 @@ export function ProviderMenuList({
 					setMenuIdx(null);
 				}}
 				onKeyDown={(e) => {
+					if (isImeComposing(e.nativeEvent)) return;
 					if (e.key === "ArrowDown" || e.key === "ArrowUp") {
 						e.preventDefault();
 						e.stopPropagation();
@@ -318,6 +319,7 @@ export function FontMenuList({
 					setMenuIdx(null); // new query → the walk restarts on Enter/↓
 				}}
 				onKeyDown={(e) => {
+					if (isImeComposing(e.nativeEvent)) return;
 					if (e.key === "ArrowDown" || e.key === "ArrowUp") {
 						e.preventDefault();
 						e.stopPropagation();

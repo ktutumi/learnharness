@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { fuzzyScore } from "@/src/core";
+import { fuzzyScore, isImeComposing } from "@/src/core";
 
 /** The model picker's search, arrow-walk, row styling and scrolling machine.
  * Models and dictation languages supply only their catalog and row content.
@@ -63,6 +63,7 @@ export function SearchMenuList<T>({
 			disabled={disabled}
 			onChange={(event) => { setQuery(event.target.value); setMenuIdx(null); }}
 			onKeyDown={(event) => {
+				if (isImeComposing(event.nativeEvent)) return;
 				if (event.key === "ArrowDown" || event.key === "ArrowUp") {
 					event.preventDefault();
 					event.stopPropagation();
