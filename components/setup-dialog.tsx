@@ -40,7 +40,7 @@ import { useEffect, useRef, useState } from "react";
 import { HostDialog } from "@/components/host-dialog";
 import { useInteractionLayers } from "@/components/interaction-layers";
 import type React from "react";
-import { type ModelCatalogEntry, type ModelSlotName, type ModelsSettings, CUSTOM_PROVIDER } from "@/src/core";
+import { isImeComposing, type ModelCatalogEntry, type ModelSlotName, type ModelsSettings, CUSTOM_PROVIDER } from "@/src/core";
 import { prettyModel } from "@/components/usage-format";
 import { ModelMenuList } from "@/components/settings/model-menu";
 import { MenuShell } from "@/components/menu-shell";
@@ -201,7 +201,7 @@ export function SetupKeysBody({
 								value={value}
 								onChange={(e) => onValue(e.target.value)}
 								onKeyDown={(e) => {
-									if (e.key === "Enter" && value.trim()) onSave();
+									if (e.key === "Enter" && !isImeComposing(e.nativeEvent) && value.trim()) onSave();
 								}}
 								placeholder="Paste key…"
 								aria-label={`${provider.label} key`}

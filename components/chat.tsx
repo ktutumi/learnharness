@@ -116,6 +116,7 @@ import {
 	dismissedAnswer,
 	endsInFailedTurn,
 	findPendingToolCall,
+	isImeComposing,
 	phaseAt3,
 	phaseTimeline,
 	teachStepIndex,
@@ -1649,6 +1650,7 @@ export function Chat({
 								value={titleDraft}
 								onChange={(e) => setTitleDraft(e.target.value)}
 								onKeyDown={(e) => {
+									if (isImeComposing(e.nativeEvent)) return;
 									if (!isInteractionScopeEligible(e.currentTarget, controller)) return;
 									if (e.key === "Enter") void commitRename(titleDraft);
 									// stopPropagation claims the Esc (keyboard wave A):

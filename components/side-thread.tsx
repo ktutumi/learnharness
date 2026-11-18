@@ -2,7 +2,7 @@
 
 import { useContext, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { ArrowRight, CornerDownLeft, GripVertical, MessageCircleQuestion, Mic, Pin, PinOff, Square, X } from "lucide-react";
-import { actionForBinding, collectCitations, eventBinding, SIDE_QUOTE_MAX_CHARS, SIDE_QUESTION_MAX_CHARS, type TextSelector, type TutorCitation } from "@/src/core";
+import { actionForBinding, collectCitations, eventBinding, isImeComposing, SIDE_QUOTE_MAX_CHARS, SIDE_QUESTION_MAX_CHARS, type TextSelector, type TutorCitation } from "@/src/core";
 import { rmsToMeter, type DictationPhase } from "./dictation";
 import { CitationActionsContext } from "./citation-chip";
 import { MessageResponse } from "./ai-elements/message";
@@ -154,7 +154,7 @@ export function SideThreadBody({ state, chatId, draft, readDraft, dictation, onD
 					<Textarea ref={inputRef} aria-label="Side question" data-testid="side-thread-input" className="min-h-9 resize-none border-0 bg-transparent pr-14 font-prose text-sm shadow-none focus-visible:ring-0 dark:bg-transparent" rows={1}
 						value={question} maxLength={SIDE_QUESTION_MAX_CHARS} placeholder={sideThreadPlaceholder(state)} onChange={(event) => changeDraft(event.target.value)}
 						onKeyDown={(event) => {
-							if (event.nativeEvent.isComposing || !isInteractionScopeEligible(inputRef.current, controller)) return;
+							if (isImeComposing(event.nativeEvent) || !isInteractionScopeEligible(inputRef.current, controller)) return;
 							if (event.key === "Enter" && (!event.shiftKey || event.metaKey || event.ctrlKey)) { event.preventDefault(); event.stopPropagation(); void submit(); }
 							else if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); onClose(); }
 						}} />
